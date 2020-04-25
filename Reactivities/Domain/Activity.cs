@@ -2,9 +2,9 @@
 
 namespace Domain
 {
-    public class Class1
+    public class Activity
     {
-        public Guid Id { get; set; }
+        public Guid ActivityId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }

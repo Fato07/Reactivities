@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { Container } from 'semantic-ui-react';
 import axios from 'axios';
 import { IActivity } from '../models/activity';
 import NavBar from '../../features/nav/NavBar';
-import { Container } from 'semantic-ui-react';
-
+import ActivityDashboard from '../../features/activities/dashboard/ActivityDashBoard'
 
 const App = () => {
   const [activities, setActivities] = useState<IActivity[]>([]);
@@ -17,9 +17,30 @@ const App = () => {
     setEditMode(true);
   }
 
+  const handleCreateActivity = (activity: IActivity) => {
+    setActivities([...activities, activity]);
+    setSelectedActivity(activity);
+    setEditMode(false);
+  }
+
+  const handleEditActivity = (activity: IActivity) => {
+    setActivities([...activities.filter(a => a.activityId !== activity.activityId), activity])
+    setSelectedActivity(activity);
+    setEditMode(false);
+  }
+
+  const handleDeleteActivity = (id: string) => {
+    setActivities([...activities.filter(a => a.activityId !== id)])
+  }
+
+  const handleSelectActivity = (id: string) => {
+    setSelectedActivity(activities.filter(a => a.activityId === id)[0]);
+    setEditMode(false);
+  };
+
   useEffect(() => {
     axios
-      .get<IActivity[]>('http://localhost:5000/api/activities')
+      .get<IActivity[]>('https://localhost:5001/api/activities')
       .then(response => {
         let activities: IActivity[] = [];
         response.data.forEach(activity => {
@@ -30,10 +51,21 @@ const App = () => {
       });
   }, []);
 
-  return(
+  return (
     <Fragment>
       <NavBar openCreateForm={handleOpenCreateForm} />
       <Container style={{ marginTop: '7em' }}>
+        <ActivityDashboard
+          activities={activities}
+          selectActivity={handleSelectActivity}
+          selectedActivity={selectedActivity}
+          editMode={editMode}
+          setEditMode={setEditMode}
+          setSelectedActivity={setSelectedActivity}
+          createActivity={handleCreateActivity}
+          editActivity={handleEditActivity}
+          deleteActivity={handleDeleteActivity}
+        />
       </Container>
     </Fragment>
   );

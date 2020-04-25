@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Persistance
 {
-    public class Seed
+    public class DataBaseHandler
     {
         public static void MigrateDatabase(AppDbContext context)
         {

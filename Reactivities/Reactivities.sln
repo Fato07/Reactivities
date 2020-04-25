@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{971DED22-5C95-479F-AC58-405B09F47E47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{C7601FA2-B14C-4EBB-B98E-18D4BC0D43CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{C7601FA2-B14C-4EBB-B98E-18D4BC0D43CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistance", "Persistance\Persistance.csproj", "{096BFDCC-D810-47AF-ABC4-F956C1DB9B76}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{1D8CE392-BCCA-49D2-905F-1EAC8780508D}"
 ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
+	..\..\..\..\DistributedSytems\AkaverCode\demo2019s\AspSolution\Directory.Build.props = ..\..\..\..\DistributedSytems\AkaverCode\demo2019s\AspSolution\Directory.Build.props
+EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,5 +78,7 @@ Global
 		{51110DE1-C7B0-4F7A-BDD0-D77BAF97660F}.Release|x64.Build.0 = Release|Any CPU
 		{51110DE1-C7B0-4F7A-BDD0-D77BAF97660F}.Release|x86.ActiveCfg = Release|Any CPU
 		{51110DE1-C7B0-4F7A-BDD0-D77BAF97660F}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

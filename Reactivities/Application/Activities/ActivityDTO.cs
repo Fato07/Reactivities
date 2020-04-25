@@ -1,4 +1,7 @@
-$HEADER$namespace $NAMESPACE$
+namespace Application.Activities
 {
-  public class $CLASS$ {$END$}
+    public class ActivityDTO
+    {
+        
+    }
 }

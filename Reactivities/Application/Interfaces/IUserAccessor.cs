@@ -1,4 +1,7 @@
-$HEADER$namespace $NAMESPACE$
+namespace Application.Interfaces
 {
-  public interface $INTERFACE$ {$END$}
+    public interface IUserAccessor
+    {
+        
+    }
 }
