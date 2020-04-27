@@ -21,7 +21,7 @@ const Activities = {
     details: (actvityId: string) => requests.get(`/activities/${actvityId}`),
     create: (activity: IActivity) => requests.post('/activities', activity),
     update: (activity: IActivity) => requests.put(`/activities/${activity.activityId}`, activity),
-    delete: (actvityId: string) => requests.del(`/activities/${actvityId}`),
+    delete: (activityId: string) => requests.del(`/activities/${activityId}`),
 
 }
 
