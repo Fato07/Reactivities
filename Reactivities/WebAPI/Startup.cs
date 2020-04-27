@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.MiddleWare;
 using Application;
 using Application.Activities;
 using MediatR;
 using AutoMapper;
 using Domain.Identity;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,8 +41,10 @@ namespace API
                     Configuration.GetConnectionString("MsSqlConnection"));
             });
             
-
-            services.AddControllers();
+            
+            services.AddControllers().AddFluentValidation(config=> 
+                config.RegisterValidatorsFromAssemblyContaining<Create>());
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsAllowAll",
@@ -60,9 +64,10 @@ namespace API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             UpdateDataBase(app, env, Configuration);
+            app.UseMiddleware<ErrorHandlingMiddleWare>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
