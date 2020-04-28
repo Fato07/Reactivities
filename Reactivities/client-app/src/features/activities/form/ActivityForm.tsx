@@ -5,6 +5,13 @@ import { v4 as uuid } from "uuid";
 import ActivityStore from "../../../app/stores/activityStore";
 import { observer } from "mobx-react-lite";
 import { RouteComponentProps } from "react-router";
+import { Form as FinalForm, Field } from 'react-final-form';
+import { values } from "mobx";
+import TextInput from "../../../app/common/form/TextInput";
+import TextAreaInput from "../../../app/common/form/TextAreaInput";
+import { SelectInput } from "../../../app/common/form/SelectInput";
+import { category } from "../../../app/common/options/categoryOptions";
+import DateInput from "../../../app/common/form/DateInput";
 
 interface DetailParams {
   id: string;
@@ -28,7 +35,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     title: "",
     category: "",
     description: "",
-    date: "",
+    date: null,
     city: "",
     venue: "",
   });
@@ -51,21 +58,21 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     activity.activityId.length,
   ]);
 
-  const handleSubmit = () => {
-    if (activity.activityId.length === 0) {
-      let newActivity = {
-        ...activity,
-        activityId: uuid(),
-      };
-      createActivity(newActivity).then(() =>
-        history.push(`/activities/${newActivity.activityId}`)
-      );
-    } else {
-      editActivity(activity).then(() =>
-        history.push(`/activities/${activity.activityId}`)
-      );
-    }
-  };
+  // const handleSubmit = () => {
+  //   if (activity.activityId.length === 0) {
+  //     let newActivity = {
+  //       ...activity,
+  //       activityId: uuid(),
+  //     };
+  //     createActivity(newActivity).then(() =>
+  //       history.push(`/activities/${newActivity.activityId}`)
+  //     );
+  //   } else {
+  //     editActivity(activity).then(() =>
+  //       history.push(`/activities/${activity.activityId}`)
+  //     );
+  //   }
+  // };
 
   const handleInputChange = (
     event: FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -74,45 +81,52 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     setActivity({ ...activity, [name]: value });
   };
 
+  const handleFinalFormSubmit =(values: any) => {
+    console.log(values);
+  }
+
   return (
     <Grid>
       <GridColumn width={10}>
         <Segment clearing>
-          <Form onSubmit={handleSubmit}>
-            <Form.Input
-              onChange={handleInputChange}
+          <FinalForm
+          onSubmit={handleFinalFormSubmit}
+          render={({handleSubmit}) => (
+            <Form onSubmit={handleSubmit}>
+              <Field
               name="title"
               placeholder="Title"
               value={activity.title}
+              component ={TextInput}
             />
-            <Form.TextArea
-              onChange={handleInputChange}
+            <Field
+              component={TextAreaInput}
               name="description"
-              rows={2}
+              rows={3}
               placeholder="Description"
               value={activity.description}
             />
-            <Form.Input
-              onChange={handleInputChange}
+            <Field
+              component={SelectInput}
               name="category"
               placeholder="Category"
               value={activity.category}
+              options={category}
             />
-            <Form.Input
-              onChange={handleInputChange}
+            <Field<Date>
+              component={DateInput}
               name="date"
-              type="datetime-local"
               placeholder="Date"
-              value={activity.date}
+              value={activity.date!}
             />
-            <Form.Input
-              onChange={handleInputChange}
+            <Field
+              component={TextInput}
               name="city"
               placeholder="City"
               value={activity.city}
             />
-            <Form.Input
-              onChange={handleInputChange}
+            <Field
+             component={TextInput}
               name="venue"
               placeholder="Venue"
               value={activity.venue}
@@ -130,7 +144,9 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
               type="button"
               content="Cancel"
             />
-          </Form>
+            </Form>
+          )}
+          />
         </Segment>
       </GridColumn>
     </Grid>
