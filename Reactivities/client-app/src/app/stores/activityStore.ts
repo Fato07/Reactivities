@@ -57,12 +57,15 @@ class ActivityStore {
               activity = await agent.Activities.details(activityId);
               runInAction('getting activity',()=>{
                   this.activity = activity;
+                  this.activityRegistry.set(activity.id, activity);
                   this.loadingInitial = false
               });
+              return activity;
           } catch (error) {
               runInAction('get activity error', () => {
-                console.log(error)
+                this.loadingInitial = false;
               })
+              //console.log(error);    
           }
       }
   }
