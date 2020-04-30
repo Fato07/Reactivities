@@ -14,7 +14,7 @@ export const TextAreaInput: React.FC<IProps> = ({
 }) => {
     return (
       <Form.Field error={touched && !!error} width={width}>
-      <textarea {...input} placeholder={placeholder}/>
+      <textarea rows={rows} {...input} placeholder={placeholder}/>
       {touched && error && (
           <Label basic color='red'>
               {error}
