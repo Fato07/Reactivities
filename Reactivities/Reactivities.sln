@@ -17,6 +17,8 @@ ProjectSection(SolutionItems) = preProject
 	..\..\..\..\DistributedSytems\AkaverCode\demo2019s\AspSolution\Directory.Build.props = ..\..\..\..\DistributedSytems\AkaverCode\demo2019s\AspSolution\Directory.Build.props
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,18 @@ Global
 		{51110DE1-C7B0-4F7A-BDD0-D77BAF97660F}.Release|x64.Build.0 = Release|Any CPU
 		{51110DE1-C7B0-4F7A-BDD0-D77BAF97660F}.Release|x86.ActiveCfg = Release|Any CPU
 		{51110DE1-C7B0-4F7A-BDD0-D77BAF97660F}.Release|x86.Build.0 = Release|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Debug|x64.Build.0 = Debug|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Debug|x86.Build.0 = Debug|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Release|x64.ActiveCfg = Release|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Release|x64.Build.0 = Release|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Release|x86.ActiveCfg = Release|Any CPU
+		{C4B5A2FC-84CE-4D7B-8859-0E785C2F4DEA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

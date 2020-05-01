@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Domain;
+using Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Persistance
 {
-    public class DataBaseHandler
+    public class DataBaseSeedHandler
     {
         public static void MigrateDatabase(AppDbContext context)
         {
@@ -18,6 +21,38 @@ namespace Persistance
             context.Database.EnsureDeleted();
         }
 
+        public static async Task SeedIdentity(AppDbContext context, UserManager<AppUser> userManager)
+        {
+            if (!context.Users.Any())
+            {
+                var users = new List<AppUser>
+                {
+                    new AppUser
+                    {
+                        DisplayName = "Fathin",
+                        UserName = "fathin",
+                        Email = "Fathin@test.com",
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Bob",
+                        UserName = "bob",
+                        Email = "Bob@test.com",
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Tom",
+                        UserName = "tom",
+                        Email = "Tom@test.com",
+                    },
+                };
+
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
+                }
+            }
+        }
         public static void SeedData(AppDbContext context)
         {
             if (!context.Activities.Any())

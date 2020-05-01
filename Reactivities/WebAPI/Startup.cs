@@ -1,24 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using API.MiddleWare;
 using Application;
 using Application.Activities;
+using Application.Interfaces;
 using MediatR;
 using AutoMapper;
 using Domain.Identity;
 using FluentValidation.AspNetCore;
+using Infrastructure.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Persistance;
 
 namespace API
@@ -41,10 +49,6 @@ namespace API
                     Configuration.GetConnectionString("MsSqlConnection"));
             });
             
-            
-            services.AddControllers().AddFluentValidation(config=> 
-                config.RegisterValidatorsFromAssemblyContaining<Create>());
-            
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsAllowAll",
@@ -57,7 +61,33 @@ namespace API
             });
 
             services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+                
+            }).AddFluentValidation(config=> 
+                config.RegisterValidatorsFromAssemblyContaining<Create>());
 
+            var builder = services.AddIdentityCore<AppUser>();
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<AppDbContext>();
+            identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SigningKey"]));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
+                AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = key,
+                        ValidateAudience= false,
+                        ValidateIssuer = false
+                    };
+                });
+            services.AddScoped<IJWTGenerator, JWTGenerator>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,8 +103,9 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            
             app.UseCors("CorsAllowAll");
+
+            app.UseAuthentication();
             app.UseAuthorization();
            
             app.UseEndpoints(endpoints =>
@@ -88,23 +119,30 @@ namespace API
             // give me the scoped services (everyhting created by it will be closed at the end of service scope life).
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var logger = serviceScope.ServiceProvider.GetService<ILogger<Startup>>();
-
             using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+            using var userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
 
             if (configuration.GetValue<bool>("DataInitialization:DropDatabase"))
             {
                 logger.LogInformation("DropDatabase");
-                DataBaseHandler.DeleteDatabase(context);
+                DataBaseSeedHandler.DeleteDatabase(context);
             }
             if (configuration.GetValue<bool>("DataInitialization:MigrateDatabase"))
             {
                 logger.LogInformation("MigrateDatabase");
-                DataBaseHandler.MigrateDatabase(context);
+                DataBaseSeedHandler.MigrateDatabase(context);
             }
+            
+            if (configuration.GetValue<bool>("DataInitialization:SeedIdentity"))
+            { 
+                logger.LogInformation("SeedIdentity");
+               DataBaseSeedHandler.SeedIdentity(context, userManager).Wait();
+            }
+            
             if (configuration.GetValue<bool>("DataInitialization:SeedData"))
             {
                 logger.LogInformation("SeedData");
-                DataBaseHandler.SeedData(context);
+                DataBaseSeedHandler.SeedData(context);
             }
 
         }

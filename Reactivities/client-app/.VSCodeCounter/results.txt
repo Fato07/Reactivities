@@ -1,0 +1,70 @@
+Date : 2020-04-30 13:37:39
+Directory : /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src
+Total : 28 files,  1109 codes, 39 comments, 150 blanks, all 1298 lines
+
+Languages
++------------------+------------+------------+------------+------------+------------+
+| language         | files      | code       | comment    | blank      | total      |
++------------------+------------+------------+------------+------------+------------+
+| TypeScript React |         20 |        764 |          5 |         94 |        863 |
+| TypeScript       |          7 |        321 |         32 |         47 |        400 |
+| CSS              |          1 |         24 |          2 |          9 |         35 |
++------------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                                                     | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                                        |         28 |      1,109 |         39 |        150 |      1,298 |
+| app                                                                                                                                                      |         14 |        437 |          2 |         64 |        503 |
+| app/api                                                                                                                                                  |          1 |         41 |          0 |         10 |         51 |
+| app/common                                                                                                                                               |          6 |        132 |          0 |         15 |        147 |
+| app/common/form                                                                                                                                          |          4 |        116 |          0 |         13 |        129 |
+| app/common/options                                                                                                                                       |          1 |          8 |          0 |          0 |          8 |
+| app/common/util                                                                                                                                          |          1 |          8 |          0 |          2 |         10 |
+| app/layout                                                                                                                                               |          5 |        105 |          2 |         19 |        126 |
+| app/models                                                                                                                                               |          1 |         28 |          0 |          4 |         32 |
+| app/stores                                                                                                                                               |          1 |        131 |          0 |         16 |        147 |
+| features                                                                                                                                                 |         11 |        545 |          2 |         64 |        611 |
+| features/activities                                                                                                                                      |          9 |        502 |          0 |         57 |        559 |
+| features/activities/dashboard                                                                                                                            |          3 |         92 |          0 |         16 |        108 |
+| features/activities/details                                                                                                                              |          5 |        258 |          0 |         31 |        289 |
+| features/activities/form                                                                                                                                 |          1 |        152 |          0 |         10 |        162 |
+| features/home                                                                                                                                            |          1 |         20 |          0 |          3 |         23 |
+| features/nav                                                                                                                                             |          1 |         23 |          2 |          4 |         29 |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| filename                                                                                                                                                 | language         | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/api/agent.ts                                        | TypeScript       |         41 |          0 |         10 |         51 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/common/form/DateInput.tsx                           | TypeScript React |         39 |          0 |          3 |         42 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/common/form/SelectInput.tsx                         | TypeScript React |         29 |          0 |          3 |         32 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/common/form/TextAreaInput.tsx                       | TypeScript React |         24 |          0 |          4 |         28 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/common/form/TextInput.tsx                           | TypeScript React |         24 |          0 |          3 |         27 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/common/options/categoryOptions.ts                   | TypeScript       |          8 |          0 |          0 |          8 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/common/util/util.ts                                 | TypeScript       |          8 |          0 |          2 |         10 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/layout/App.tsx                                      | TypeScript React |         40 |          0 |          3 |         43 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/layout/LoadingComponenet.tsx                        | TypeScript React |         13 |          0 |          2 |         15 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/layout/NotFound.tsx                                 | TypeScript React |         19 |          0 |          2 |         21 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/layout/ScrollToTop.tsx                              | TypeScript React |          9 |          0 |          3 |         12 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/layout/style.css                                    | CSS              |         24 |          2 |          9 |         35 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/models/activity.ts                                  | TypeScript       |         28 |          0 |          4 |         32 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/app/stores/activityStore.ts                             | TypeScript       |        131 |          0 |         16 |        147 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/activities/dashboard/ActivityDashBoard.tsx     | TypeScript React |         25 |          0 |          6 |         31 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/activities/dashboard/ActivityList.tsx          | TypeScript React |         29 |          0 |          6 |         35 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/activities/dashboard/ActivityListItem.tsx      | TypeScript React |         38 |          0 |          4 |         42 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/activities/details/ActivityDetailedChat.tsx    | TypeScript React |         58 |          0 |          7 |         65 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/activities/details/ActivityDetailedHeader.tsx  | TypeScript React |         54 |          0 |          5 |         59 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/activities/details/ActivityDetailedInfo.tsx    | TypeScript React |         44 |          0 |          6 |         50 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/activities/details/ActivityDetailedSidebar.tsx | TypeScript React |         58 |          0 |          6 |         64 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/activities/details/ActivityDetails.tsx         | TypeScript React |         44 |          0 |          7 |         51 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/activities/form/ActivityForm.tsx               | TypeScript React |        152 |          0 |         10 |        162 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/home/HomePage.tsx                              | TypeScript React |         20 |          0 |          3 |         23 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/features/nav/NavBar.tsx                                 | TypeScript React |         23 |          2 |          4 |         29 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/index.tsx                                               | TypeScript React |         22 |          3 |          7 |         32 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/react-app-env.d.ts                                      | TypeScript       |          0 |          1 |          1 |          2 |
+| /Users/fathindosunmu/OneDrive/MyProjects/GitHubProjects/Reactivities/Reactivities/client-app/src/serviceWorker.ts                                        | TypeScript       |        105 |         31 |         14 |        150 |
+| Total                                                                                                                                                    |                  |      1,109 |         39 |        150 |      1,298 |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+

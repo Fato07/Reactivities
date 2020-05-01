@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistance
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public DbSet<Activity> Activities { get; set; } = default!;
         //public DbSet<UserActivity> UserActivities { get; set; } = default!;
@@ -16,6 +16,9 @@ namespace Persistance
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }
