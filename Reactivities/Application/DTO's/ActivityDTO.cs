@@ -1,9 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using Domain;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
-namespace Domain
+namespace Application
 {
-    public class Activity
+    public class ActivityDTO
     {
         public Guid ActivityId { get; set; }
         public string Title { get; set; }
@@ -12,7 +15,8 @@ namespace Domain
         public DateTime Date { get; set; }
         public string City { get; set; }
         public string Venue { get; set; }
-
-        public virtual ICollection<UserActivity> UserActivities { get; set; }
+        
+        [JsonProperty(PropertyName = "Attendees")]
+        public ICollection<AttendeeDTO> UserActivities { get; set; }
     }
 }
