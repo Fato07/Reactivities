@@ -13,6 +13,7 @@ import DateInput from "../../../app/common/form/DateInput";
 import { CombineDateAndTime } from "../../../app/common/util/util";
 import { combineValidators, isRequired, hasLengthGreaterThan, composeValidators } from "revalidate";
 import SelectInput from "../../../app/common/form/SelectInput";
+import { RootStoreContext } from "../../../app/stores/rootStore";
 
 
 const validate = combineValidators({
@@ -36,13 +37,13 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
   history,
 }) => {
-  const activityStore = useContext(ActivityStore);
+  const rootStore = useContext(RootStoreContext);
   const {
     createActivity,
     editActivity,
     submitting,
     loadActivity,
-  } = activityStore;
+  } = rootStore.activityStore;
 
   const [activity, setActivity] = useState(new ActivityFormValues());
   const [loading, setLoading] = useState(false);

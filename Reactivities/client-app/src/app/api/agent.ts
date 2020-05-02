@@ -1,12 +1,21 @@
+import { IUser, IUserFormValues } from './../models/user';
 import { IActivity } from './../models/activity';
 import axios, { AxiosResponse } from 'axios';
 import { setTimeout } from 'timers';
 import { history } from '../..';
 import { toast } from 'react-toastify';
+import { promises } from 'dns';
 
 
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
+axios.interceptors.request.use((config) => {
+    const token = window.localStorage.getItem('jwt');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+}, error => {
+    return Promise.reject(error);
+})
 
 axios.interceptors.response.use(undefined, error => {
     if (error.message === 'Network Error' && !error.response) {
@@ -22,7 +31,7 @@ axios.interceptors.response.use(undefined, error => {
     if (status === 500) {
         toast.error('Server error - check the terminal for more info!')
     }
-    throw error;
+    throw error.response;
 });
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -43,9 +52,16 @@ const Activities = {
     create: (activity: IActivity) => requests.post('/activities', activity),
     update: (activity: IActivity) => requests.put(`/activities/${activity.activityId}`, activity),
     delete: (activityId: string) => requests.del(`/activities/${activityId}`),
+}
 
+const User = {
+    current: (): Promise<IUser> => requests.get('/user'),
+    login: (user: IUserFormValues): Promise<IUser> => requests.post(`/user/login`, user),
+    register: (user: IUserFormValues): Promise<IUser> => requests.post(`/user/register`, user),
+    
 }
 
 export default {
-    Activities
+    Activities, 
+    User
 }
