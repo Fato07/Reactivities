@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Persistance;
 
 namespace Application.Activities
@@ -28,7 +29,7 @@ namespace Application.Activities
             public async Task<List<ActivityDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activities = await _context.Activities.ToListAsync();
-
+                
                 return _mapper.Map<List<Activity>, List<ActivityDTO>>(activities);
             }
         }

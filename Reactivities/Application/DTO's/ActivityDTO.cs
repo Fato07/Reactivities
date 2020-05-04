@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using Domain;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,8 +18,6 @@ namespace Application
         public DateTime Date { get; set; }
         public string City { get; set; }
         public string Venue { get; set; }
-        
-        [JsonProperty(PropertyName = "Attendees")]
         public ICollection<AttendeeDTO> UserActivities { get; set; }
     }
 }

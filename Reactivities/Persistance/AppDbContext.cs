@@ -9,7 +9,7 @@ namespace Persistance
     {
         public DbSet<Activity> Activities { get; set; } = default!;
         public DbSet<UserActivity> UserActivities { get; set; } = default!;
-        //public DbSet<Photo> Photos { get; set; } =  default!;
+        public DbSet<Photo> Photos { get; set; } =  default!;
         //public DbSet<Comment> Comments { get; set; } =  default!;
         //public DbSet<UserFollowing> Followings { get; set; } = default!;
         

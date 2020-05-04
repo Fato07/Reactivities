@@ -12,6 +12,7 @@ using MediatR;
 using AutoMapper;
 using Domain.Identity;
 using FluentValidation.AspNetCore;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -71,7 +72,8 @@ namespace API
                 
             }).AddFluentValidation(config=> 
                 config.RegisterValidatorsFromAssemblyContaining<Create>());
-
+            
+            
             var builder = services.AddIdentityCore<AppUser>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<AppDbContext>();
@@ -101,6 +103,8 @@ namespace API
                 });
             services.AddScoped<IJWTGenerator, JWTGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

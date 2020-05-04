@@ -16,6 +16,8 @@ namespace API.Controllers
         // GET list of activities
         [HttpGet]
         [AllowAnonymous]
+        [Produces("application/json")]
+        //[Consumes("application/json")]
         public async Task<ActionResult<List<ActivityDTO>>> List()
         {
             return await Mediator.Send(new List.Query());
@@ -60,7 +62,7 @@ namespace API.Controllers
         [HttpDelete("{id}/attend")]
         public async Task<ActionResult<Unit>> UnAttend(Guid id)
         {
-            return await Mediator.Send(new UnAttend.Command{Id = id});
+            return await Mediator.Send(new Unattend.Command{Id = id});
         }
     }
 }

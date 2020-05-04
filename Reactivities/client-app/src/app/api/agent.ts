@@ -4,7 +4,6 @@ import axios, { AxiosResponse } from 'axios';
 import { setTimeout } from 'timers';
 import { history } from '../..';
 import { toast } from 'react-toastify';
-import { promises } from 'dns';
 
 
 
@@ -44,7 +43,7 @@ const requests = {
     post: (url: string, body: {}) => axios.post(url, body).then(sleep(800)).then(responseBody),
     put: (url: string, body: {}) => axios.put(url, body).then(sleep(800)).then(responseBody),
     del: (url: string) => axios.delete(url).then(sleep(800)).then(responseBody)
-}
+};
 
 const Activities = {
     list: (): Promise<IActivity[]> => requests.get('/activities'),
@@ -52,6 +51,9 @@ const Activities = {
     create: (activity: IActivity) => requests.post('/activities', activity),
     update: (activity: IActivity) => requests.put(`/activities/${activity.activityId}`, activity),
     delete: (activityId: string) => requests.del(`/activities/${activityId}`),
+    attend: (activityId: string) => requests.post(`/activities/${activityId}/attend`, {}),
+    unattend: (activityId: string) => requests.del(`/activities/${activityId}/attend`)
+
 }
 
 const User = {

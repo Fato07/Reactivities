@@ -1,14 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { Grid } from "semantic-ui-react";
-import ActivityStore from "../../../app/stores/activityStore";
 import { observer } from "mobx-react-lite";
 import { RouteComponentProps } from "react-router-dom";
 import LoadingComponenet from "../../../app/layout/LoadingComponenet";
 import { ActivityDetailedHeader } from "./ActivityDetailedHeader";
 import { ActivityDetailedInfo } from "./ActivityDetailedInfo";
-import { ActivityDetailedSidebar } from "./ActivityDetailedSidebar";
-import { ActivityDetailedChat } from "./ActivityDetailedChat";
 import { RootStoreContext } from "../../../app/stores/rootStore";
+import ActivityDetailedChat from "./ActivityDetailedChat";
+import ActivityDetailedSidebar from "./ActivityDetailedSidebar";
 
 interface DetailParams {
   id: string;
@@ -38,7 +37,7 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
         <ActivityDetailedChat/>
       </Grid.Column>
       <Grid.Column width={6}>
-        <ActivityDetailedSidebar/>
+        <ActivityDetailedSidebar attendees={activity.userActivities}/>
       </Grid.Column>
     </Grid>
   );
