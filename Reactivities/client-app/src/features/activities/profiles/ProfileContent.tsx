@@ -10,7 +10,8 @@ const panes = [
     {menuItem: 'Followers', render: () => <Tab.Pane>Followers Content</Tab.Pane> },
     {menuItem: 'Following', render: () => <Tab.Pane>Following Content</Tab.Pane> }
 ]
-export const ProfileContent = () => {
+
+const ProfileContent = () => {
     return (
         <Tab
         menu={{fluid: true, vertical: true}}
@@ -20,3 +21,5 @@ export const ProfileContent = () => {
         />
     )
 }
+
+export default ProfileContent;

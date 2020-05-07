@@ -1,9 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Header, Grid, Image, Button } from "semantic-ui-react";
+import { Header, Grid, Button, ButtonGroup } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import PhotoWidgetDropZone from "./PhotoWidgetDropZone";
 import PhotoWidgetCropper from "./PhotoWidgetCropper";
-import { loadavg } from "os";
 interface IProps {
   loading: boolean;
   uploadPhoto: (file: Blob) => void;
@@ -45,7 +44,7 @@ const PhotoUploadWidget: React.FC<IProps> = ({ loading, uploadPhoto }) => {
                 className="img-preview"
                 style={{ minHeight: "200px", overflow: "hidden" }}
               />
-              <Button.Group widths={2}>
+              <ButtonGroup widths={2}>
                 <Button
                   positive
                   icon="check"
@@ -57,7 +56,7 @@ const PhotoUploadWidget: React.FC<IProps> = ({ loading, uploadPhoto }) => {
                   disabled={loading}
                   onClick={() => setFiles([])}
                 />
-              </Button.Group>
+              </ButtonGroup>
             </Fragment>
           )}
         </Grid.Column>

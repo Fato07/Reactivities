@@ -1,6 +1,6 @@
 import { computed } from "mobx";
 import { runInAction } from "mobx";
-import { IProfile } from "./../models/profile";
+import { IProfile, IPhoto } from "./../models/profile";
 import { RootStore } from "./rootStore";
 import { observable, action } from "mobx";
 import agent from "../api/agent";
@@ -16,10 +16,11 @@ export default class ProfileStore {
   @observable profile: IProfile | null = null;
   @observable loadingProfile = true;
   @observable uploadingPhoto = false;
+  @observable loading = false;
 
   @computed get isCurrentUser() {
     if (this.rootStore.userStore.user && this.profile) {
-      return this.rootStore.userStore.user.userName === this.profile.userName;
+      return this.rootStore.userStore.user.userName === this.profile.username;
     } else {
       return false;
     }
@@ -49,8 +50,8 @@ export default class ProfileStore {
         if (this.profile) {
           this.profile.photos.push(photo);
           if (photo.isMain && this.rootStore.userStore.user) {
-            this.rootStore.userStore.user.image = photo.url;
-            this.profile.image = photo.url;
+            this.rootStore.userStore.user.image = photo.imageUrl;
+            this.profile.image = photo.imageUrl;
           }
         }
         this.uploadingPhoto = false;
@@ -63,4 +64,40 @@ export default class ProfileStore {
       });
     }
   };
+
+  @action setMainPhoto = async (photo: IPhoto) => {
+    this.loading = true;
+    try {
+      await agent.Profiles.setMainPhoto(photo.id);
+      runInAction(() => {
+        this.rootStore.userStore.user!.image = photo.imageUrl;
+        this.profile!.photos.find((a) => a.isMain)!.isMain = false;
+        this.profile!.photos.find((a) => a.id === photo.id)!.isMain = true;
+        this.profile!.image = photo.imageUrl;
+        this.loading = false;
+      });
+    } catch (error) {
+      toast.error("Problem Setting Photo as Main");
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
+
+  @action deletePhoto = async (photo: IPhoto) =>{
+    this.loading = true;
+    try {
+      await agent.Profiles.deletePhoto(photo.id);
+      runInAction(()=>{
+        this.profile!.photos = this.profile!.photos.filter(a=> a.id !== photo.id);
+        this.loading = false
+      })
+    } catch (error) {
+      toast.error('Problem Deleting The Photo');
+      runInAction(()=>{
+        this.loading = false;
+      })
+    }
+
+  }
 }
