@@ -3,10 +3,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistance.Migrations
 {
-    public partial class Identity : Migration
+    public partial class NewMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Activities",
+                columns: table => new
+                {
+                    ActivityId = table.Column<Guid>(nullable: false),
+                    Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    City = table.Column<string>(nullable: true),
+                    Venue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Activities", x => x.ActivityId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -154,6 +171,52 @@ namespace Persistance.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Photos",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    IsMain = table.Column<bool>(nullable: false),
+                    AppUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photos_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserActivities",
+                columns: table => new
+                {
+                    AppUserId = table.Column<string>(nullable: false),
+                    ActivityId = table.Column<Guid>(nullable: false),
+                    DateJoined = table.Column<DateTime>(nullable: false),
+                    IsHost = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserActivities", x => new { x.AppUserId, x.ActivityId });
+                    table.ForeignKey(
+                        name: "FK_UserActivities_Activities_ActivityId",
+                        column: x => x.ActivityId,
+                        principalTable: "Activities",
+                        principalColumn: "ActivityId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserActivities_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -192,6 +255,16 @@ namespace Persistance.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_AppUserId",
+                table: "Photos",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserActivities_ActivityId",
+                table: "UserActivities",
+                column: "ActivityId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -212,7 +285,16 @@ namespace Persistance.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Photos");
+
+            migrationBuilder.DropTable(
+                name: "UserActivities");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Activities");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

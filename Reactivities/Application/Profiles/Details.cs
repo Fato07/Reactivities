@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -13,30 +14,33 @@ namespace Application.Profiles
     {
         public class Query : IRequest<Profile>
         {
-            public string UserName { get; set; }
+            public string Username { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Profile>
         {
             private readonly AppDbContext _context;
+            private readonly IUserAccessor _userAccessor;
           
-            public Handler(AppDbContext context)
+            public Handler(AppDbContext context, IUserAccessor userAccessor)
             {
                 _context = context;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Profile> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == request.UserName);
+                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName());
 
-                return new Profile
-                {
-                    DisplayName = user.DisplayName,
-                    UserName = user.UserName,
-                    Image = user.Photos.FirstOrDefault(x => x.IsMain)?.ImageUrl,
-                    Photos = user.Photos,
-                    Bio = user.Bio
-                };
+                var profile = new Profile();
+
+                profile.DisplayName = user.DisplayName;
+                profile.Username = user.UserName;
+                profile.Image = user.Photos.FirstOrDefault(x => x.IsMain)?.ImageUrl;
+                profile.Photos = user.Photos;
+                profile.Bio = user.Bio;
+
+                return profile;
             }
         }
     }

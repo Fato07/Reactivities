@@ -10,8 +10,8 @@ using Persistance;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200504152042_AddPhotos")]
-    partial class AddPhotos
+    [Migration("20200507002732_New Migrations")]
+    partial class NewMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -123,9 +123,8 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Photo", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
