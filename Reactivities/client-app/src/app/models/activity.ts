@@ -1,4 +1,5 @@
 
+//Mapped with Respect to ActivityDTO in API
 export interface IActivity{
     activityId: string;
     title: string;
@@ -10,6 +11,7 @@ export interface IActivity{
     isGoing: boolean;
     isHost: boolean;
     userActivities: IAttendee[]; 
+    comments: IComment[];
 }
 
 export interface IActivityFormValues extends Partial<IActivity>{
@@ -34,9 +36,20 @@ export class ActivityFormValues implements IActivityFormValues{
     }
 }
 
+//Mapped with Respect to AttendeeDTO in API
 export interface IAttendee {
-    userName: string;
+    username: string;
     displayName: string;
     image: string;
     isHost: boolean;
+}
+
+//Mapped with Respect to CommentDTO in API
+export interface IComment{
+    commentId: string;
+    createdAt: Date;
+    body: string;
+    username: string;
+    displayName: string;
+    imageUrl: string;    
 }

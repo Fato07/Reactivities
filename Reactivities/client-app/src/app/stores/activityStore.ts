@@ -6,6 +6,11 @@ import { SyntheticEvent } from "react";
 import agent from "../api/agent";
 import { history } from "../..";
 import { toast } from "react-toastify";
+import {
+  HubConnection,
+  HubConnectionBuilder,
+  LogLevel,
+} from "@microsoft/signalr";
 
 export default class ActivityStore {
   rootStore: RootStore;
@@ -19,6 +24,55 @@ export default class ActivityStore {
   @observable submitting = false;
   @observable target = "";
   @observable loading = false;
+  @observable.ref hubConnection: HubConnection | null = null;
+
+  @action createHubConnection = (activityId: string) => {
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl("https://localhost:5001/chat", {
+        accessTokenFactory: () => this.rootStore.commonStore.token!,
+      })
+      .configureLogging(LogLevel.Information)
+      .build();
+
+    this.hubConnection
+      .start()
+      .then(() => console.log(this.hubConnection!.state))
+      .then(() => {
+        console.log("Attempting to join group");
+        this.hubConnection!.invoke("AddToGroup", activityId);
+      })
+      .catch((error) => console.log("Error Establishing connection:", error));
+
+    //Spelling Is Important here because its related to chatHub in ServerSide
+    this.hubConnection.on("RecieveComment", (comment) => {
+      runInAction(() => {
+        this.activity!.comments.push(comment);
+      });
+    });
+
+    this.hubConnection.on("Send", (message) => {
+      toast.info(message);
+    });
+  };
+
+  @action stopHubConnection = () => {
+    this.hubConnection!.invoke("RemoveFromGroup", this.activity!.activityId)
+      .then(() => {
+        this.hubConnection!.stop();
+      })
+      .then(() => console.log("Connection Stopped"))
+      .catch(err => console.log(err));
+  };
+
+  @action addComment = async (values: any) => {
+    values.activityId = this.activity!.activityId;
+    try {
+      //The Name 'SendComment' needs to match excatly with the name of the method in API ChatHub
+      await this.hubConnection!.invoke("SendComment", values);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   @computed get activitiesByDate() {
     return this.groupActivitiesByDate(
@@ -102,8 +156,9 @@ export default class ActivityStore {
       const attendee = createAttendee(this.rootStore.userStore.user!);
       attendee.isHost = true;
       let attendees = [];
-      attendees.push(attendee)
+      attendees.push(attendee);
       activity.userActivities = attendees;
+      activity.comments = [];
       activity.isHost = true;
       runInAction("creating actvity", () => {
         this.activityRegistry.set(activity.activityId, activity);
@@ -188,7 +243,7 @@ export default class ActivityStore {
         if (this.activity) {
           //gets an array of all attenddes apart of the currently logged in User
           this.activity.userActivities = this.activity.userActivities.filter(
-            (a) => a.userName !== this.rootStore.userStore.user!.userName
+            (a) => a.username !== this.rootStore.userStore.user!.username
           );
 
           this.activity.isGoing = false;

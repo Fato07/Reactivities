@@ -10,7 +10,7 @@ const ActivityListItemAttendees: React.FC<IProps> = ({ attendees }) => {
     return (
       <List horizontal>
         {attendees.map(attendee => (
-          <List.Item key={attendee.userName}>
+          <List.Item key={attendee.username}>
             <Popup
               header={attendee.displayName}
               trigger={

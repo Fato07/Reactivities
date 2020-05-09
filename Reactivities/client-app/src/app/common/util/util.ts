@@ -14,11 +14,11 @@ export const CombineDateAndTime = (date: Date, time: Date) => {
 export const SetActivityProps = (activity: IActivity, user: IUser) => {
   activity.date = new Date(activity.date);
   activity.isGoing = activity.userActivities.some(
-    (a) => a.userName === user.userName
+    (a) => a.username === user.username
   );
 
   activity.isHost = activity.userActivities.some(
-    (a) => a.userName === user.userName && a.isHost
+    (a) => a.username === user.username && a.isHost
   );
   return activity;
 };
@@ -28,7 +28,7 @@ export const createAttendee = (user: IUser): IAttendee => {
     return{
         displayName: user.displayName,
         isHost: false,
-        userName: user.userName,
+        username: user.username,
         image: user.image!
 
     }

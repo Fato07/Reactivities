@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using API.MiddleWare;
+using API.SignalR;
 using Application;
 using Application.Activities;
 using Application.Interfaces;
@@ -57,14 +58,16 @@ namespace API
                 options.AddPolicy("CorsAllowAll",
                     builder =>
                     {
-                        builder.AllowAnyOrigin();
+                        builder.WithOrigins("http://localhost:3000");
                         builder.AllowAnyHeader();
                         builder.AllowAnyMethod();
+                        builder.AllowCredentials();
                     });
             });
 
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(List.Handler));
+            services.AddSignalR();
             services.AddMvc(options =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -100,6 +103,22 @@ namespace API
                         ValidateAudience= false,
                         ValidateIssuer = false
                     };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            //receiving jwt token as a request header from client becayse the chatHub is not a HTTP request
+                            //Protocol
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
+                            {
+                                context.Token = accessToken;
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
             services.AddScoped<IJWTGenerator, JWTGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
@@ -124,10 +143,11 @@ namespace API
 
             app.UseAuthentication();
             app.UseAuthorization();
-           
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
         

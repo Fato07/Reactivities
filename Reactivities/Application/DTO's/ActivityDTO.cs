@@ -19,5 +19,6 @@ namespace Application
         public string City { get; set; }
         public string Venue { get; set; }
         public ICollection<AttendeeDTO> UserActivities { get; set; }
+        public ICollection<CommentDTO> Comments { get; set; }
     }
 }

@@ -20,7 +20,7 @@ export default class ProfileStore {
 
   @computed get isCurrentUser() {
     if (this.rootStore.userStore.user && this.profile) {
-      return this.rootStore.userStore.user.userName === this.profile.username;
+      return this.rootStore.userStore.user.username === this.profile.username;
     } else {
       return false;
     }
@@ -39,6 +39,22 @@ export default class ProfileStore {
         this.loadingProfile = false;
       });
       console.log(error);
+    }
+  };
+
+  @action updateProfile = async (profile: Partial<IProfile>) => {
+    try {
+      await agent.Profiles.updateProfile(profile);
+      runInAction(() => {
+        if (
+          profile.displayName !== this.rootStore.userStore.user!.displayName
+        ) {
+          this.rootStore.userStore.user!.displayName = profile.displayName!;
+        }
+        this.profile = { ...this.profile!, ...profile };
+      });
+    } catch (error) {
+      toast.error("Problem Updating Profile");
     }
   };
 
@@ -84,20 +100,21 @@ export default class ProfileStore {
     }
   };
 
-  @action deletePhoto = async (photo: IPhoto) =>{
+  @action deletePhoto = async (photo: IPhoto) => {
     this.loading = true;
     try {
       await agent.Profiles.deletePhoto(photo.id);
-      runInAction(()=>{
-        this.profile!.photos = this.profile!.photos.filter(a=> a.id !== photo.id);
-        this.loading = false
-      })
-    } catch (error) {
-      toast.error('Problem Deleting The Photo');
-      runInAction(()=>{
+      runInAction(() => {
+        this.profile!.photos = this.profile!.photos.filter(
+          (a) => a.id !== photo.id
+        );
         this.loading = false;
-      })
+      });
+    } catch (error) {
+      toast.error("Problem Deleting The Photo");
+      runInAction(() => {
+        this.loading = false;
+      });
     }
-
-  }
+  };
 }
