@@ -20,16 +20,26 @@ export default class ProfileStore {
 
   @computed get isCurrentUser() {
     if (this.rootStore.userStore.user && this.profile) {
+      // runInAction(() => {
+      //   this.profile.username = this.rootStore.userStore.user.username;
+      // })
       return this.rootStore.userStore.user.username === this.profile.username;
+
     } else {
       return false;
     }
   }
 
-  @action loadProfile = async (userName: string) => {
+  @action loadProfile = async (username: string) => {
     this.loadingProfile = true;
     try {
-      const profile = await agent.Profiles.get(userName);
+      console.log(username);
+
+      const profile = await agent.Profiles.get(username);
+
+
+      console.log(username);
+      console.log(profile);
       runInAction(() => {
         this.profile = profile;
         this.loadingProfile = false;
@@ -54,7 +64,7 @@ export default class ProfileStore {
         this.profile = { ...this.profile!, ...profile };
       });
     } catch (error) {
-      toast.error("Problem Updating Profile");
+      toast.error('Problem updating profile');
     }
   };
 
@@ -112,6 +122,40 @@ export default class ProfileStore {
       });
     } catch (error) {
       toast.error("Problem Deleting The Photo");
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
+
+  @action follow = async (username: string) => {
+    this.loading = true;
+    try {
+      await agent.Profiles.follow(username);
+      runInAction(() => {
+        this.profile!.following = true;
+        this.profile!.followersCount++;
+        this.loading = false;
+      });
+    } catch (error) {
+      toast.error("Problem Following User");
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
+
+  @action unfollow = async (username: string) => {
+    this.loading = true;
+    try {
+      await agent.Profiles.unfollow(username);
+      runInAction(() => {
+        this.profile!.following = true;
+        this.profile!.followersCount--;
+        this.loading = false;
+      });
+    } catch (error) {
+      toast.error("Problem unFollowing User");
       runInAction(() => {
         this.loading = false;
       });

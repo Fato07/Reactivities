@@ -38,7 +38,7 @@ export const ActivityListItem: React.FC<{ activity: IActivity }> = ({
                   />
                 </Item.Description>
               )}
-              {activity.isGoing && (
+              {activity.isGoing && !activity.isHost && (
                 <Item.Description>
                   <Label
                     basic
@@ -54,10 +54,9 @@ export const ActivityListItem: React.FC<{ activity: IActivity }> = ({
       <Segment>
         <Icon name="clock" /> {format(activity.date, "h:mm a")}
         <Icon name="marker" /> {activity.venue}, {activity.city}
-      </Segment>
+      </Segment> 
       {/* userActivity is the same as attendee to an event, Using it this way because i could not find a hack to rename my API property to "Attendee"*/}
       <Segment secondary>
-        {" "}
         <ActivityListItemAttendees attendees={activity.userActivities} />{" "}
       </Segment>
       <Segment clearing>

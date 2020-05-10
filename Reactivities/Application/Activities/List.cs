@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -29,6 +29,8 @@ namespace Application.Activities
             public async Task<List<ActivityDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activities = await _context.Activities.ToListAsync();
+                
+                _mapper.ConfigurationProvider.AssertConfigurationIsValid();
                 
                 return _mapper.Map<List<Activity>, List<ActivityDTO>>(activities);
             }

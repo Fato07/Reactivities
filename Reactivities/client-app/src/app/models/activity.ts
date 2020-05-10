@@ -42,6 +42,7 @@ export interface IAttendee {
     displayName: string;
     image: string;
     isHost: boolean;
+    following?: boolean; //if user is following the attendee
 }
 
 //Mapped with Respect to CommentDTO in API
