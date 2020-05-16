@@ -1,6 +1,6 @@
 import { IProfile, IPhoto } from "./../models/profile";
 import { IUser, IUserFormValues } from "./../models/user";
-import { IActivity } from "./../models/activity";
+import { IActivity, IActivitiesEnvelope } from "./../models/activity";
 import axios, { AxiosResponse } from "axios";
 import { setTimeout } from "timers";
 import { history } from "../..";
@@ -65,7 +65,7 @@ const requests = {
 };
 
 const Activities = {
-  list: (): Promise<IActivity[]> => requests.get("/activities"),
+  list: (params: URLSearchParams): Promise<IActivitiesEnvelope> => axios.get('/activities', {params: params}).then(sleep(1000)).then(responseBody),
   details: (actvityId: string) => requests.get(`/activities/${actvityId}`),
   create: (activity: IActivity) => requests.post("/activities", activity),
   update: (activity: IActivity) =>
@@ -86,13 +86,14 @@ const User = {
 };
 
 const Profiles = {
-    get: (username: string): Promise<IProfile> => requests.get(`/profiles/${username}`),
+    getProfile: (username: string): Promise<IProfile> => requests.get(`/profiles/${username}`),
     uploadPhoto: (photo: Blob): Promise<IPhoto> => requests.postFrom(`/photos`, photo),
     setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
     deletePhoto: (id: string) => requests.del(`/photos/${id}`),
     updateProfile: (profile: Partial<IProfile>) => requests.put(`/profiles`, profile),
     follow: (username: string) => requests.post(`/profiles/${username}/follow`, {}),
-    unfollow: (username: string) => requests.del(`/profiles/${username}/follow`)
+    unfollow: (username: string) => requests.del(`/profiles/${username}/follow`),
+    listfollowings: (username: string, predicate: string) => requests.get(`/profiles/${username}/follow?predicate=${predicate}`)
 };
 
 export default {

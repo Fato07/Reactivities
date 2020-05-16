@@ -1,4 +1,4 @@
-import { computed } from "mobx";
+import { computed, reaction } from "mobx";
 import { runInAction } from "mobx";
 import { IProfile, IPhoto } from "./../models/profile";
 import { RootStore } from "./rootStore";
@@ -11,12 +11,28 @@ export default class ProfileStore {
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
+
+    reaction(
+
+      () => this.activeTab,
+      activeTab => {
+        if(activeTab === 3 || activeTab === 4 ){
+          const predicate = activeTab === 3 ? 'followers' : 'followings';
+          this.loadFollowings(predicate);
+        }
+        else{
+          this.followings = [];
+        }
+      }
+    )
   }
 
   @observable profile: IProfile | null = null;
   @observable loadingProfile = true;
   @observable uploadingPhoto = false;
   @observable loading = false;
+  @observable followings : IProfile[] = [];
+  @observable activeTab: number = 0;
 
   @computed get isCurrentUser() {
     if (this.rootStore.userStore.user && this.profile) {
@@ -30,15 +46,21 @@ export default class ProfileStore {
     }
   }
 
+  @action setActiveTab = (activeIndex: number) =>{
+    this.activeTab = activeIndex;
+
+  }
+
   @action loadProfile = async (username: string) => {
     this.loadingProfile = true;
     try {
-      console.log(username);
-
-      const profile = await agent.Profiles.get(username);
-
-
-      console.log(username);
+      console.log("UserName Passed In: " + username);
+      //This is not working for some reason, i have no idea why
+      //TODO FIX THIS
+      //////////////////////////////////////////////////////////
+      const profile = await agent.Profiles.getProfile(username);
+      /////////////////////////////////////////////////////////
+      console.log(profile.username);
       console.log(profile);
       runInAction(() => {
         this.profile = profile;
@@ -161,4 +183,21 @@ export default class ProfileStore {
       });
     }
   };
+
+  @action loadFollowings = async (predicate: string) => {
+    this.loading = true;
+    try {
+      const profiles = await agent.Profiles.listfollowings(this.profile!.username, predicate);
+      runInAction(() => {
+        this.followings = profiles;
+        this.loading = false;
+      })
+      
+    } catch (error) {
+      toast.error("Problem loading Followings");
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  }
 }

@@ -18,9 +18,13 @@ namespace API.Controllers
         [AllowAnonymous]
         [Produces("application/json")]
         //[Consumes("application/json")]
-        public async Task<ActionResult<List<ActivityDTO>>> List()
+        public async Task<ActionResult<List.ActivitiesEnvelope>> List(int? limit, int? offset, bool isGoing, bool isHost, DateTime? startDate)
         {
-            return await Mediator.Send(new List.Query());
+            //limit- how many activities to be returned
+            //offSet- How many activities to be skipped
+            //Upon receiving a list of activities, optional parameters are passed: 'list' and 'offset'
+            //returns a list of activities based on the limit specified and how many activities would be skipped
+            return await Mediator.Send(new List.Query(limit, offset, isGoing, isHost, startDate));
         }
         
         // GET single of activity by ID

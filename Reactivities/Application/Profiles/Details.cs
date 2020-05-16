@@ -30,15 +30,20 @@ namespace Application.Profiles
 
             public async Task<Profile> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName());
+                var user = await _context.Users.SingleOrDefaultAsync(
+                    x => x.UserName == _userAccessor.GetCurrentUserName());
 
-                var profile = new Profile();
-
-                profile.DisplayName = user.DisplayName;
-                profile.Username = user.UserName;
-                profile.Image = user.Photos.FirstOrDefault(x => x.IsMain)?.ImageUrl;
-                profile.Photos = user.Photos;
-                profile.Bio = user.Bio;
+                //Profile to be returned
+                var profile = new Profile
+                {
+                    DisplayName = user.DisplayName,
+                    Username = user.UserName,
+                    Image = user.Photos.FirstOrDefault(x => x.IsMain)?.ImageUrl,
+                    Photos = user.Photos,
+                    Bio = user.Bio,
+                    FollowersCount = user.Followers.Count,
+                    FollowingCount = user.Followings.Count
+                };
 
                 return profile;
             }

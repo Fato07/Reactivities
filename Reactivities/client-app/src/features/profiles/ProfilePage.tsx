@@ -23,7 +23,7 @@ const ProfilePage: React.FC<IProps> = ({ match }) => {
     unfollow,
     isCurrentUser,
     loading,
-   // setActiveTab
+    setActiveTab
   } = rootStore.profileStore;
 
   console.log("test " + match.params.username)
@@ -43,7 +43,7 @@ const ProfilePage: React.FC<IProps> = ({ match }) => {
           follow={follow}
           unfollow={unfollow}
         />
-        <ProfileContent />
+        <ProfileContent setActiveTab={setActiveTab}/>
       </Grid.Column>
     </Grid>
   );

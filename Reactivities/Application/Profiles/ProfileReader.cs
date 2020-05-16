@@ -19,7 +19,7 @@ namespace Application.Profiles
             _userAccessor = userAccessor;
         }
 
-        //This method Would be added as a service and injected into Ptofile API endpoints on each user Profile
+        //This method Would be added as a service and injected into Profile API endpoints on each user Profile
         public async Task<Profile> ReadProfile(string username)
         {
             //Check if user passed into the method exists

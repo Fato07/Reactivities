@@ -1,4 +1,8 @@
+export interface IActivitiesEnvelope{
+    activities: IActivity[];
+    activityCount: number;
 
+}
 //Mapped with Respect to ActivityDTO in API
 export interface IActivity{
     activityId: string;

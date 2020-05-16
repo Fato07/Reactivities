@@ -16,7 +16,7 @@ import {ToastContainer} from 'react-toastify';
 import { RootStoreContext } from '../stores/rootStore';
 import ModalContainer from '../common/modals/ModalContainer';
 import LoadingComponent from './LoadingComponenet';
-import ProfilePage from '../../features/activities/profiles/ProfilePage';
+import ProfilePage from '../../features/profiles/ProfilePage';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashBoard';
 
 

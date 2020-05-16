@@ -8,6 +8,7 @@ const NavBar: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
   const { logOut, user } = rootStore.userStore;
 
+  console.log("USER"+user);
   return (
     <Menu fixed="top" inverted>
       <Container>
