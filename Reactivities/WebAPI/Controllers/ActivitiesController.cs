@@ -15,8 +15,7 @@ namespace API.Controllers
     {
         // GET list of activities
         [HttpGet]
-        [AllowAnonymous]
-        [Produces("application/json")]
+        //[Produces("application/json")]
         //[Consumes("application/json")]
         public async Task<ActionResult<List.ActivitiesEnvelope>> List(int? limit, int? offset, bool isGoing, bool isHost, DateTime? startDate)
         {

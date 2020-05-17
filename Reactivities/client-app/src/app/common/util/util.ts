@@ -11,7 +11,7 @@ export const CombineDateAndTime = (date: Date, time: Date) => {
   return new Date(dateString + " " + timeString);
 };
 
-export const SetActivityProps = (activity: IActivity, user: IUser) => {
+export const setActivityProps = (activity: IActivity, user: IUser) => {
   activity.date = new Date(activity.date);
   activity.isGoing = activity.userActivities.some(
     (a) => a.username === user.username

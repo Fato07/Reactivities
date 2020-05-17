@@ -3,12 +3,13 @@ import { Tab } from 'semantic-ui-react'
 import { ProfilePhotos } from './ProfilePhotos'
 import ProfileDescription from './ProfileDescription'
 import ProfileFollowings from './ProfileFollowings'
+import ProfileActivities from './ProfileActivities'
 
 //An Array of Objects which has a menuItem fopr the Content of the Page
 const panes = [
     {menuItem: 'About', render: () => <ProfileDescription/> },
     {menuItem: 'Photos', render: () => <ProfilePhotos/> },
-    {menuItem: 'Activities', render: () => <Tab.Pane>Activities Content</Tab.Pane> },
+    {menuItem: 'Activities', render: () => <ProfileActivities/>},
     {menuItem: 'Followers', render: () => <ProfileFollowings/>},
     {menuItem: 'Following', render: () => <ProfileFollowings/> }
 ]

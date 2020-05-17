@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Security.Claims;
 using Application.Interfaces;
@@ -19,7 +20,6 @@ namespace Infrastructure.Security
         {
             var userName = _httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x =>
                 x.Type == ClaimTypes.NameIdentifier)?.Value;
-
             return userName;
         }
     }

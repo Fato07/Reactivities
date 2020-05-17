@@ -19,33 +19,16 @@ namespace Application.Profiles
 
         public class Handler : IRequestHandler<Query, Profile>
         {
-            private readonly AppDbContext _context;
-            private readonly IUserAccessor _userAccessor;
-          
-            public Handler(AppDbContext context, IUserAccessor userAccessor)
+            private readonly IProfileReader _profileReader;
+
+            public Handler(AppDbContext context, IProfileReader profileReader)
             {
-                _context = context;
-                _userAccessor = userAccessor;
+                _profileReader = profileReader;
             }
 
             public async Task<Profile> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.SingleOrDefaultAsync(
-                    x => x.UserName == _userAccessor.GetCurrentUserName());
-
-                //Profile to be returned
-                var profile = new Profile
-                {
-                    DisplayName = user.DisplayName,
-                    Username = user.UserName,
-                    Image = user.Photos.FirstOrDefault(x => x.IsMain)?.ImageUrl,
-                    Photos = user.Photos,
-                    Bio = user.Bio,
-                    FollowersCount = user.Followers.Count,
-                    FollowingCount = user.Followings.Count
-                };
-
-                return profile;
+                return await _profileReader.ReadProfile(request.Username);
             }
         }
     }

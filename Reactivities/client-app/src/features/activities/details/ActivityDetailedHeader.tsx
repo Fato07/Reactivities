@@ -1,51 +1,53 @@
-import React, { useContext } from "react";
-import { Segment, Item, Header, Button, Image } from "semantic-ui-react";
-import { IActivity } from "../../../app/models/activity";
-import { observer } from "mobx-react-lite";
-import { Link } from "react-router-dom";
-import { format } from "date-fns";
-import { RootStoreContext } from "../../../app/stores/rootStore";
+import React, { useContext } from 'react';
+import { Segment, Item, Header, Button, Image } from 'semantic-ui-react';
+import { IActivity } from '../../../app/models/activity';
+import { observer } from 'mobx-react-lite';
+import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const activityImageStyle = {
-  filter: "brightness(30%)",
+  filter: 'brightness(30%)'
 };
 
 const activityImageTextStyle = {
-  position: "absolute",
-  bottom: "5%",
-  left: "5%",
-  width: "100%",
-  height: "auto",
-  color: "white",
+  position: 'absolute',
+  bottom: '5%',
+  left: '5%',
+  width: '100%',
+  height: 'auto',
+  color: 'white'
 };
 
-export const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
-  activity,
+const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
+  activity
 }) => {
+  const host = activity.userActivities.filter(x => x.isHost)[0];
   const rootStore = useContext(RootStoreContext);
-  const { cancelAttendance, attendActivity, loading} = rootStore.activityStore;
-  const host = activity.userActivities.filter((x) => x.isHost)[0];
+  const { attendActivity, cancelAttendance, loading } = rootStore.activityStore;
   return (
-    
     <Segment.Group>
-      <Segment basic attached="top" style={{ padding: "0" }}>
+      <Segment basic attached='top' style={{ padding: '0' }}>
         <Image
           src={`/assets/categoryImages/${activity.category}.jpg`}
           fluid
           style={activityImageStyle}
         />
-        <Segment basic style={activityImageTextStyle}>
+        <Segment style={activityImageTextStyle} basic>
           <Item.Group>
             <Item>
               <Item.Content>
                 <Header
-                  size="huge"
+                  size='huge'
                   content={activity.title}
-                  style={{ color: "white" }}
+                  style={{ color: 'white' }}
                 />
-                <p>{format(activity.date, "eeee do MMMM")}</p>
+                <p>{format(activity.date, 'eeee do MMMM')}</p>
                 <p>
-                  Hosted by  <Link to={`/profile/${host.username}`}> <strong>{host.displayName}</strong></Link>
+                  Hosted by{' '}
+                  <Link to={`/profile/${host.username}`}>
+                    <strong>{host.displayName}</strong>
+                  </Link>
                 </p>
               </Item.Content>
             </Item>
@@ -63,7 +65,7 @@ export const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
             Manage Event
           </Button>
         ) : activity.isGoing ? (
-          <Button  loading={loading} onClick={cancelAttendance}>
+          <Button loading={loading} onClick={cancelAttendance}>
             Cancel attendance
           </Button>
         ) : (

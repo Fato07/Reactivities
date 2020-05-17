@@ -23,10 +23,10 @@ namespace Application.Activities
 
         public class Query : IRequest<ActivitiesEnvelope>
         {
-            public Query(int? limit, int? offSet, bool isGoing, bool isHost, DateTime? startDate)
+            public Query(int? limit, int? offset, bool isGoing, bool isHost, DateTime? startDate)
             {
                 Limit = limit;
-                OffSet = offSet;
+                Offset = offset;
                 IsGoing = isGoing;
                 IsHost = isHost;
                 //if the requested Date gotten is null, set it to the current Date
@@ -34,7 +34,7 @@ namespace Application.Activities
             }
 
             public int? Limit { get; set; }
-            public int? OffSet { get; set; }
+            public int? Offset { get; set; }
             public bool IsGoing { get; }
             public bool IsHost { get; }
             public DateTime? StartDate { get; }
@@ -62,29 +62,25 @@ namespace Application.Activities
 
                 if (request.IsGoing && !request.IsHost)
                 {
-                    queryable = queryable.Where(x =>
-                        x.UserActivities.Any(a => a.AppUser.UserName == _userAccessor.GetCurrentUserName()));
+                    queryable = queryable.Where(x => x.UserActivities.Any(
+                        a => a.AppUser.UserName == _userAccessor.GetCurrentUserName()));
                 }
 
                 if (request.IsHost && !request.IsGoing)
                 {
-                    queryable = queryable.Where(x =>
-                        x.UserActivities.Any(a => a.AppUser.UserName == _userAccessor.GetCurrentUserName() && a.IsHost));
+                    queryable = queryable.Where(x => x.UserActivities.Any(
+                        a => a.AppUser.UserName == _userAccessor.GetCurrentUserName() && a.IsHost));
                 }
-                
+
                 var activities = await queryable
-                    .Skip(request.OffSet ?? 0)
-                    //if no limit is given, return 3 activities by default
-                    .Take(request.Limit ?? 3)
-                    .ToListAsync();
-                
+                    .Skip(request.Offset ?? 0)
+                    .Take(request.Limit ?? 3).ToListAsync();
+
                 return new ActivitiesEnvelope
                 {
                     Activities = _mapper.Map<List<Activity>, List<ActivityDTO>>(activities),
                     ActivityCount = queryable.Count()
                 };
-                
-
             }
         }
     }

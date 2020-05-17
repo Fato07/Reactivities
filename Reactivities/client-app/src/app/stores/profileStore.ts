@@ -1,6 +1,6 @@
 import { computed, reaction } from "mobx";
 import { runInAction } from "mobx";
-import { IProfile, IPhoto } from "./../models/profile";
+import { IProfile, IPhoto, IUserActivity } from "./../models/profile";
 import { RootStore } from "./rootStore";
 import { observable, action } from "mobx";
 import agent from "../api/agent";
@@ -13,26 +13,26 @@ export default class ProfileStore {
     this.rootStore = rootStore;
 
     reaction(
-
       () => this.activeTab,
-      activeTab => {
-        if(activeTab === 3 || activeTab === 4 ){
-          const predicate = activeTab === 3 ? 'followers' : 'followings';
+      (activeTab) => {
+        if (activeTab === 3 || activeTab === 4) {
+          const predicate = activeTab === 3 ? "followers" : "followings";
           this.loadFollowings(predicate);
-        }
-        else{
+        } else {
           this.followings = [];
         }
       }
-    )
+    );
   }
 
   @observable profile: IProfile | null = null;
   @observable loadingProfile = true;
   @observable uploadingPhoto = false;
   @observable loading = false;
-  @observable followings : IProfile[] = [];
+  @observable followings: IProfile[] = [];
   @observable activeTab: number = 0;
+  @observable userActivities: IUserActivity[] = [];
+  @observable loadingActivities = false;
 
   @computed get isCurrentUser() {
     if (this.rootStore.userStore.user && this.profile) {
@@ -40,16 +40,30 @@ export default class ProfileStore {
       //   this.profile.username = this.rootStore.userStore.user.username;
       // })
       return this.rootStore.userStore.user.username === this.profile.username;
-
     } else {
       return false;
     }
   }
 
-  @action setActiveTab = (activeIndex: number) =>{
-    this.activeTab = activeIndex;
+  @action loadUserActivities = async (username: string, predicate?: string) => {
+    this.loadingActivities = true;
+    try {
+      const activities = await agent.Profiles.listActivities(username, predicate!);
+      runInAction(() => {
+        this.userActivities = activities;
+        this.loadingActivities = false;
+      })
+    } catch (error) {
+      toast.error('Problem Loading Activities');
+      runInAction(() => {
+        this.loadingActivities= false;
+      });
+    }
+  };
 
-  }
+  @action setActiveTab = (activeIndex: number) => {
+    this.activeTab = activeIndex;
+  };
 
   @action loadProfile = async (username: string) => {
     this.loadingProfile = true;
@@ -86,7 +100,7 @@ export default class ProfileStore {
         this.profile = { ...this.profile!, ...profile };
       });
     } catch (error) {
-      toast.error('Problem updating profile');
+      toast.error("Problem updating profile");
     }
   };
 
@@ -187,17 +201,19 @@ export default class ProfileStore {
   @action loadFollowings = async (predicate: string) => {
     this.loading = true;
     try {
-      const profiles = await agent.Profiles.listfollowings(this.profile!.username, predicate);
+      const profiles = await agent.Profiles.listfollowings(
+        this.profile!.username,
+        predicate
+      );
       runInAction(() => {
         this.followings = profiles;
         this.loading = false;
-      })
-      
+      });
     } catch (error) {
       toast.error("Problem loading Followings");
       runInAction(() => {
         this.loading = false;
       });
     }
-  }
+  };
 }

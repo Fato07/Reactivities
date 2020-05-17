@@ -1,7 +1,7 @@
-import { SetActivityProps, createAttendee } from "./../common/util/util";
+import { createAttendee, setActivityProps } from "./../common/util/util";
 import { RootStore } from "./rootStore";
 import { IActivity } from "./../models/activity";
-import { observable, action, computed, runInAction, values } from "mobx";
+import { observable, action, computed, runInAction, reaction } from "mobx";
 import { SyntheticEvent } from "react";
 import agent from "../api/agent";
 import { history } from "../..";
@@ -43,7 +43,7 @@ export default class ActivityStore {
 
   @action setPredicate =(predicate: string, value: string | Date) => {
     this.predicate.clear();
-    if(predicate !== 'all'){
+    if(predicate !== 'all') {
       this.predicate.set(predicate, value);
     }
   }
@@ -152,7 +152,7 @@ export default class ActivityStore {
       const { activities, activityCount } = activitiesEnvelope;
       runInAction("loading activities", () => {
         activities.forEach((activity) => {
-          SetActivityProps(activity, this.rootStore.userStore.user!);
+          setActivityProps(activity, this.rootStore.userStore.user!);
           this.activityRegistry.set(activity.activityId, activity);
         });
         this.activityCount = activityCount;

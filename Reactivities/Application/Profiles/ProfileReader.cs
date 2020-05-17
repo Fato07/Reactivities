@@ -22,15 +22,14 @@ namespace Application.Profiles
         //This method Would be added as a service and injected into Profile API endpoints on each user Profile
         public async Task<Profile> ReadProfile(string username)
         {
-            //Check if user passed into the method exists
+            //Check if the user passed in exists
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
             
             if(user == null)
                 throw new RestException(HttpStatusCode.NotFound, new {User = "User Not Found"});
             
             //Check if user is Currently logged in user
-            var currentUser = await _context.Users.SingleOrDefaultAsync(x =>
-                x.UserName == _userAccessor.GetCurrentUserName());
+            var currentUser = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName());
 
             //Profile to be returned
             var profile = new Profile
@@ -42,7 +41,6 @@ namespace Application.Profiles
                 Bio = user.Bio,
                 FollowersCount = user.Followers.Count,
                 FollowingCount = user.Followings.Count
-                
             };
             
             //check if the currently logged in User is following the Profile of the user to be returned
