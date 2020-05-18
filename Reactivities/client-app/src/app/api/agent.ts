@@ -2,7 +2,6 @@ import { IProfile, IPhoto } from "./../models/profile";
 import { IUser, IUserFormValues } from "./../models/user";
 import { IActivity, IActivitiesEnvelope } from "./../models/activity";
 import axios, { AxiosResponse } from "axios";
-import { setTimeout } from "timers";
 import { history } from "../..";
 import { toast } from "react-toastify";
 
