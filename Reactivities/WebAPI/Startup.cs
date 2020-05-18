@@ -60,6 +60,7 @@ namespace API
                     builder =>
                     {
                         builder.WithOrigins("http://localhost:3000");
+                        builder.WithExposedHeaders("WWW-Authenticate");
                         builder.AllowAnyHeader();
                         builder.AllowAnyMethod();
                         builder.AllowCredentials();
@@ -102,7 +103,9 @@ namespace API
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = key,
                         ValidateAudience= false,
-                        ValidateIssuer = false
+                        ValidateIssuer = false,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                     options.Events = new JwtBearerEvents
                     {

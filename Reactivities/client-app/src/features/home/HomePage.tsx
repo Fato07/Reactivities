@@ -9,6 +9,7 @@ const HomePage = () => {
   const rootStore = useContext(RootStoreContext);
   const { isLoggedIn, user } = rootStore.userStore;
   const { openModal} = rootStore.modalStore;
+  const token = window.localStorage.getItem('jwt');
 
 
   return (
@@ -23,7 +24,7 @@ const HomePage = () => {
           />
           Reactivities
         </Header>
-        {isLoggedIn && user ? (
+        {isLoggedIn && user && token ? (
           <Fragment>
             <Header
               as="h2"
