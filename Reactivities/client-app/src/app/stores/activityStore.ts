@@ -1,7 +1,7 @@
 import { createAttendee, setActivityProps } from "./../common/util/util";
 import { RootStore } from "./rootStore";
 import { IActivity } from "./../models/activity";
-import { observable, action, computed, runInAction, reaction } from "mobx";
+import { observable, action, computed, runInAction, reaction, toJS } from "mobx";
 import { SyntheticEvent } from "react";
 import agent from "../api/agent";
 import { history } from "../..";
@@ -167,10 +167,15 @@ export default class ActivityStore {
   };
 
   @action loadActivity = async (activityId: string) => {
+
+    //Load Acitivity From Cache and return it (This is returned as a JS Object)
+    //if not in cache, then get the activity from The API and return it(This is returned a JS Object).
     let activity = this.getActivity(activityId);
     if (activity) {
       this.activity = activity;
-      return activity;
+
+      //toJS, a property in mobx to convert observables to plain JS objects
+      return toJS(activity);
     } else {
       this.loadingInitial = true;
       try {
