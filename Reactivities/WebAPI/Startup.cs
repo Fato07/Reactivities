@@ -31,6 +31,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Persistance;
+using static System.Diagnostics.Debug;
 
 namespace API
 {
@@ -42,7 +43,7 @@ namespace API
         }
 
         public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -70,14 +71,14 @@ namespace API
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(List.Handler));
             services.AddSignalR();
-            services.AddMvc(options =>
+            services.AddControllers(options =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
                 
             }).AddFluentValidation(config=> 
                 config.RegisterValidatorsFromAssemblyContaining<Create>());
-            
+
             
             var builder = services.AddIdentityCore<AppUser>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
@@ -85,12 +86,12 @@ namespace API
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
             services.AddAuthorization(options =>
-            {
-                options.AddPolicy("IsActivityHost", policy =>
-                {
+             {
+                 options.AddPolicy("IsActivityHost", policy =>
+                 {
                     policy.Requirements.Add(new IsHostRequirement());
-                });
-            });
+                 });
+             });
             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
             
@@ -119,11 +120,12 @@ namespace API
                             {
                                 context.Token = accessToken;
                             }
-
                             return Task.CompletedTask;
                         }
                     };
                 });
+            
+           
             services.AddScoped<IJWTGenerator, JWTGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
@@ -150,10 +152,10 @@ namespace API
             app.UseCors("CorsAllowAll");
 
             app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthorization();
             
             app.UseEndpoints(endpoints =>
-            {
+            { 
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chat");
                 endpoints.MapFallbackToController("Index", "Fallback");
@@ -162,7 +164,7 @@ namespace API
         
         private static void UpdateDataBase(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration)
         {
-            // give me the scoped services (everyhting created by it will be closed at the end of service scope life).
+            // give me the scoped services (everything created by it will be closed at the end of service scope life).
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var logger = serviceScope.ServiceProvider.GetService<ILogger<Startup>>();
             using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
@@ -190,7 +192,6 @@ namespace API
                 logger.LogInformation("SeedData");
                 DataBaseSeedHandler.SeedData(context);
             }
-
         }
     }
 }
