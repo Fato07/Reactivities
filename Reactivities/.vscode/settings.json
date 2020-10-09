@@ -1,0 +1,30 @@
+{
+    "deploy.reloaded": {
+        "packages": [
+            {
+                "name": "Version 1.0.0",
+                "description": "Package version 1.0.0",
+
+                "files": [
+                    "publish/**"
+                ]
+            }
+        ],
+
+        "targets": [
+            {
+                "type": "sftp",
+                "name": "Linux",
+                "description": "SFTP folder",
+
+                "host": "165.227.146.39", "port": 22,
+                "user": "root", "password": "4u.jEA.3Zbr2#Fz",
+
+                "dir": "/var/reactivities",
+                "mappings": {
+                    "api/publish/**": "/"
+                }
+            }
+        ]
+    }
+}
