@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using API.MiddleWare;
 using API.SignalR;
-using Application;
 using Application.Activities;
 using Application.Interfaces;
 using Application.Profiles;
@@ -20,9 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,7 +25,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Persistance;
-using static System.Diagnostics.Debug;
+
 
 namespace API
 {
@@ -58,13 +52,13 @@ namespace API
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsAllowAll",
-                    builder =>
+                    policyBuilder =>
                     {
-                        builder.WithOrigins("http://localhost:3000");
-                        builder.WithExposedHeaders("WWW-Authenticate");
-                        builder.AllowAnyHeader();
-                        builder.AllowAnyMethod();
-                        builder.AllowCredentials();
+                        policyBuilder.WithOrigins("http://localhost:3000");
+                        policyBuilder.WithExposedHeaders("WWW-Authenticate");
+                        policyBuilder.AllowAnyHeader();
+                        policyBuilder.AllowAnyMethod();
+                        policyBuilder.AllowCredentials();
                     });
             });
 
@@ -152,7 +146,7 @@ namespace API
             app.UseCors("CorsAllowAll");
 
             app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthorization();
             
             app.UseEndpoints(endpoints =>
             { 

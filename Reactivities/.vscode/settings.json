@@ -22,7 +22,7 @@
 
                 "dir": "/var/reactivities",
                 "mappings": {
-                    "api/publish/**": "/"
+                    "publish/**": "/"
                 }
             }
         ]
